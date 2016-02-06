@@ -1,26 +1,19 @@
 function jump(target, options) {
-	var start = window.pageYOffset;
-
-	var opt = {
-	  duration: options.duration,
-	  offset: options.offset || 0,
-	  callback: options.callback,
-	  easing: options.easing || easeInOutQuad
-	};
-
-	var distance = typeof target === 'string' ? 
-		opt.offset + document.querySelector(target).getBoundingClientRect().top : 
-		target
-	;
-
-	var duration = typeof opt.duration === 'function'
-		  ? opt.duration(distance)
-		  : opt.duration
-	;
-
 	var 
-		timeStart = null,
-		timeElapsed
+		start = window.pageYOffset,
+		opt = {
+			duration: options.duration,
+			offset: options.offset || 0,
+			callback: options.callback,
+			easing: options.easing || easeInOutQuad
+		},
+		distance = typeof target === 'string'
+			? opt.offset + document.querySelector(target).getBoundingClientRect().top
+			: target,
+		duration = typeof opt.duration === 'function'
+			? opt.duration(distance)
+			: opt.duration,
+		timeStart, timeElapsed
 	;
 	
 	requestAnimationFrame(function(time) { timeStart = time; loop(time); });
@@ -41,8 +34,6 @@ function jump(target, options) {
 
 		if (typeof opt.callback === 'function')
 			opt.callback();
-		
-		timeStart = null;
 	}
 	
 	// Robert Penner's easeInOutQuad - http://robertpenner.com/easing/
