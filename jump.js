@@ -1,54 +1,51 @@
-var jump = (function() {
+function jump(target, options) {
+	var start = window.pageYOffset;
 
-	var o = {
-
-		jump: function(target, options) {
-			this.start = window.pageYOffset
-
-			this.options = {
-			  duration: options.duration,
-			  offset: options.offset || 0,
-			  callback: options.callback,
-			  easing: options.easing || easeInOutQuad
-			}
-
-			this.distance = typeof target === 'string'
-			  ? this.options.offset + document.querySelector(target).getBoundingClientRect().top
-			  : target
-
-			this.duration = typeof this.options.duration === 'function'
-			  ? this.options.duration(this.distance)
-			  : this.options.duration
-
-			requestAnimationFrame(_loop)
-		},
-
-		_loop: function(time) {
-			if(!this.timeStart) {
-			  this.timeStart = time
-			}
-
-			this.timeElapsed = time - this.timeStart
-			this.next = this.options.easing(this.timeElapsed, this.start, this.distance, this.duration)
-
-			window.scrollTo(0, this.next)
-
-			this.timeElapsed < this.duration
-			  ? requestAnimationFrame(_loop)
-			  : this._end()
-		},
-
-		_end: function() {
-			window.scrollTo(0, this.start + this.distance)
-
-			typeof this.options.callback === 'function' && this.options.callback()
-			this.timeStart = false
-		}
-	 
+	var opt = {
+	  duration: options.duration,
+	  offset: options.offset || 0,
+	  callback: options.callback,
+	  easing: options.easing || easeInOutQuad
 	};
-	
-	var _loop = o._loop.bind(o);
 
+	var distance = typeof target === 'string' ? 
+		opt.offset + document.querySelector(target).getBoundingClientRect().top : 
+		target
+	;
+
+	var duration = typeof opt.duration === 'function'
+		  ? opt.duration(distance)
+		  : opt.duration
+	;
+
+	var 
+		timeStart = null,
+		timeElapsed
+	;
+	
+	requestAnimationFrame(loop);
+	
+	function loop(time) {
+		if (timeStart === null)
+			timeStart = time;
+
+		timeElapsed = time - timeStart;
+
+		window.scrollTo(0, opt.easing(timeElapsed, start, distance, duration));
+
+		if (timeElapsed < duration)
+			requestAnimationFrame(loop)
+		else
+			end();
+	}
+
+	function end() {
+		window.scrollTo(0, start + distance);
+
+		typeof opt.callback === 'function' && opt.callback();
+		timeStart = null;
+	}
+	
 	// Robert Penner's easeInOutQuad - http://robertpenner.com/easing/
 	function easeInOutQuad(t, b, c, d)  {
 		t /= d / 2
@@ -56,7 +53,5 @@ var jump = (function() {
 		t--
 		return -c / 2 * (t * (t - 2) - 1) + b
 	}
-	
-	return o;
-
-})();
+ 
+}
