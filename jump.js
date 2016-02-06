@@ -39,7 +39,9 @@ function jump(target, options) {
 	function end() {
 		window.scrollTo(0, start + distance);
 
-		typeof opt.callback === 'function' && opt.callback();
+		if (typeof opt.callback === 'function')
+			opt.callback();
+		
 		timeStart = null;
 	}
 	
