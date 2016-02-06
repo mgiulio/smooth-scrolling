@@ -23,12 +23,9 @@ function jump(target, options) {
 		timeElapsed
 	;
 	
-	requestAnimationFrame(loop);
+	requestAnimationFrame(function(time) { timeStart = time; loop(time); });
 	
 	function loop(time) {
-		if (timeStart === null)
-			timeStart = time;
-
 		timeElapsed = time - timeStart;
 
 		window.scrollTo(0, opt.easing(timeElapsed, start, distance, duration));
