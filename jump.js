@@ -1,46 +1,62 @@
-import easeInOutQuad from './easing'
+var jump = (function() {
 
-export default class Jump {
-  jump(target, options = {}) {
-    this.start = window.pageYOffset
+	var o = {
 
-    this.options = {
-      duration: options.duration,
-      offset: options.offset || 0,
-      callback: options.callback,
-      easing: options.easing || easeInOutQuad
-    }
+		jump: function(target, options) {
+			this.start = window.pageYOffset
 
-    this.distance = typeof target === 'string'
-      ? this.options.offset + document.querySelector(target).getBoundingClientRect().top
-      : target
+			this.options = {
+			  duration: options.duration,
+			  offset: options.offset || 0,
+			  callback: options.callback,
+			  easing: options.easing || easeInOutQuad
+			}
 
-    this.duration = typeof this.options.duration === 'function'
-      ? this.options.duration(this.distance)
-      : this.options.duration
+			this.distance = typeof target === 'string'
+			  ? this.options.offset + document.querySelector(target).getBoundingClientRect().top
+			  : target
 
-    requestAnimationFrame(time => this._loop(time))
-  }
+			this.duration = typeof this.options.duration === 'function'
+			  ? this.options.duration(this.distance)
+			  : this.options.duration
 
-  _loop(time) {
-    if(!this.timeStart) {
-      this.timeStart = time
-    }
+			requestAnimationFrame(_loop)
+		},
 
-    this.timeElapsed = time - this.timeStart
-    this.next = this.options.easing(this.timeElapsed, this.start, this.distance, this.duration)
+		_loop: function(time) {
+			if(!this.timeStart) {
+			  this.timeStart = time
+			}
 
-    window.scrollTo(0, this.next)
+			this.timeElapsed = time - this.timeStart
+			this.next = this.options.easing(this.timeElapsed, this.start, this.distance, this.duration)
 
-    this.timeElapsed < this.duration
-      ? requestAnimationFrame(time => this._loop(time))
-      : this._end()
-  }
+			window.scrollTo(0, this.next)
 
-  _end() {
-    window.scrollTo(0, this.start + this.distance)
+			this.timeElapsed < this.duration
+			  ? requestAnimationFrame(_loop)
+			  : this._end()
+		},
 
-    typeof this.options.callback === 'function' && this.options.callback()
-    this.timeStart = false
-  }
-}
+		_end: function() {
+			window.scrollTo(0, this.start + this.distance)
+
+			typeof this.options.callback === 'function' && this.options.callback()
+			this.timeStart = false
+		}
+	 
+	};
+	
+	var _loop = o._loop.bind(o);
+
+	// Robert Penner's easeInOutQuad - http://robertpenner.com/easing/
+	function easeInOutQuad(t, b, c, d)  {
+		t /= d / 2
+		if(t < 1) return c / 2 * t * t + b
+		t--
+		return -c / 2 * (t * (t - 2) - 1) + b
+	}
+	
+	return o;
+
+})();
