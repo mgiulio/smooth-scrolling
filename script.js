@@ -8,10 +8,10 @@ function initSmoothScrolling() {
 		: location.href
 	;
 	
-	eventDelegation();
-	//direct();
+	delegatedLinkHijacking();
+	//directLinkHijacking();
 	
-	function eventDelegation() {
+	function delegatedLinkHijacking() {
 		document.body.addEventListener('click', onClick, false);
 		
 		function onClick(e) {
@@ -27,7 +27,7 @@ function initSmoothScrolling() {
 		}
 	}
 
-	function direct() {
+	function directLinkHijacking() {
 		[].slice.call(document.querySelectorAll('a'))
 			.filter(isInPageLink)
 			.forEach(function(a) { a.addEventListener('click', onClick, false); })
