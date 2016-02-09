@@ -1,4 +1,4 @@
-//initSmoothScrolling();
+initSmoothScrolling();
 
 function initSmoothScrolling() {
 	var duration = 400;
@@ -8,14 +8,8 @@ function initSmoothScrolling() {
 		: location.href
 	;
 	
-	window.onpopstate = function(e) {
-		console.log(e);
-		// Restore sb pos at e.state.verticalScrollbarPosition
-			// We could even smooth scroll to that position!
-	};
-	
-	//eventDelegation();
-	direct();
+	eventDelegation();
+	//direct();
 	
 	function eventDelegation() {
 		document.body.addEventListener('click', onClick, false);
@@ -27,11 +21,8 @@ function initSmoothScrolling() {
 			e.stopPropagation();
 			e.preventDefault();
 			
-			var hash = e.target.hash;
-			
-			jump(hash, {
-				duration: duration//,
-				//callback: function() { location.hash = hash.substring(1); }
+			jump(e.target.hash, {
+				duration: duration
 			});
 		}
 	}
@@ -46,21 +37,8 @@ function initSmoothScrolling() {
 			e.stopPropagation();
 			e.preventDefault();
 			
-			var hash = e.target.hash;
-			var targetUrl = e.target.href;
-			
-			jump(hash, {
+			jump(e.target.hash, {
 				duration: duration,
-				callback: function() { 
-					//location.hash = hash.substring(1); 
-					var verticalScrollbarPosition = 9999;
-					console.log(targetUrl);
-					history.pushState(
-						{'verticalScrollbarPosition': 99/*verticalScrollbarPosition*/}, 
-						'',
-						targetUrl
-					);
-				}
 			});
 		}
 		
