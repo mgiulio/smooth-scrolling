@@ -1,6 +1,9 @@
 initSmoothScrolling();
 
 function initSmoothScrolling() {
+	if ('scrollBehavior' in document.documentElement.style)
+		return;
+	
 	var duration = 400;
 	
 	var pageUrl = location.hash
