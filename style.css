@@ -1,0 +1,22 @@
+html {
+	scroll-behavior: smooth;
+}
+body {
+	max-width: 500px;
+	margin: 0 auto;
+}
+li {
+	padding: 5px 0;
+}
+footer {
+	margin-bottom: 10px
+}
+#css-support-msg {
+	text-align: center;
+	color: green;
+	
+	display: none;
+}
+#css-support-msg.supported {
+	display: block;
+}
