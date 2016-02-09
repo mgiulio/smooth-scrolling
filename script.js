@@ -1,8 +1,8 @@
 initSmoothScrolling();
 
 function initSmoothScrolling() {
-	if ('scrollBehavior' in document.documentElement.style)
-		return;
+	if (isCssSmoothSCrollSupported())
+		document.getElementById('css-support-msg').className = 'supported';
 	
 	var duration = 400;
 	
@@ -56,6 +56,10 @@ function initSmoothScrolling() {
 		
 	function stripHash(url) {
 		return url.slice(0, url.lastIndexOf('#'));
+	}
+	
+	function isCssSmoothSCrollSupported() {
+		return 'scrollBehavior' in document.documentElement.style;
 	}
 
 }

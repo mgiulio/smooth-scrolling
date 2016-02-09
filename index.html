@@ -21,10 +21,20 @@
 		footer {
 			margin-bottom: 10px
 		}
+		#css-support-msg {
+			text-align: center;
+			color: green;
+			
+			display: none;
+		}
+		#css-support-msg.supported {
+			display: block;
+		}
 	</style>
 </head>
 
 <body>
+<p id="css-support-msg">This browser supports the <code>scroll-behavior</code> property</p>
 <h1 id="top">Title</h1>
 <nav id="toc">
 	<ul>
