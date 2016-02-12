@@ -1,13 +1,13 @@
 # Smooth Scrolling in Plain JavaScript and CSS
 
-Smooth scrolling is an user interface pattern that progresssively enhances the default in-page navigation user experience by smoothly scrolling the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
+Smooth scrolling is an user interface pattern that progressively enhances the default in-page navigation user experience by smoothly scrolling the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
 
 This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of vanilla JavaScript solutions less cumbersome.
 
 Many implementations of this patterns are possible with the jQuery ecosystem, either using this library standalone or by using some plugins, but in this article we are interested to pure JavaScript solution. In particular we are going to explore the [Jump.js](http://callmecavs.com/jump.js/) library.
 
-After a presentation of the utility, with an overview of its features and characteristics, we wil apply some changes to the original code to adapt it to our needs. In doing this we will refresh some JavaScript core language skills as functions and closures.
-After this, we will write an HTML page to test the smooth scolling behavior that we will implement with an additional script.
+After a presentation of the utility, with an overview of its features and characteristics, we will apply some changes to the original code to adapt it to our needs. In doing this we will refresh some JavaScript core language skills as functions and closures.
+After this, we will write an HTML page to test the smooth scrolling behavior that we will implement with an additional script.
 Support, when available, for native smooth scrolling with CSS will then added and finally we conclude with some observations on the browser history.
 
 ## Jump.js
@@ -324,18 +324,18 @@ It must *hijack* the clicks on the in-page links, disabling the browser default 
 So, first thing is to monitor the clicks on the in-page links.
 We can do this in two ways, with event delegation or attaching the handler to each relevant link.
 
-In the first approach, with event delegation, we add our click listener to only one elemnt, namely the document.body. In this way, every click event on whatever element of the page will bubble up DOM tree along the branch of its anchestors until it will reach the document body element:
+In the first approach, with event delegation, we add our click listener to only one element, namely the document.body. In this way, every click event on whatever element of the page will bubble up DOM tree along the branch of its ancestors until it will reach the document body element:
 
 ```javascript
 document.body.addEventListener('click', onClick, false);
 ```
 
 Of course, now in the registered event listener(onClick) the first thing that we have to do is to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
-This can be don ine several ways so we abstract it in an helper function,  isInPageLink(). We'll have a look at the mechanics of this function in a moment.
+This can be don in several ways so we abstract it in an helper function,  isInPageLink(). We'll have a look at the mechanics of this function in a moment.
 
-If the incoming click is on an in-page link we stop the event bubbling and prevent the associated default action, the instantaneus scrollbar change to the target destination.
+If the incoming click is on an in-page link we stop the event bubbling and prevent the associated default action, the instantaneous scrollbar change to the target destination.
 
-Finally we call our jump function, providing it first the hash selector for the target element and then the parameters to configure the desidered animated jump.
+Finally we call our jump function, providing it first the hash selector for the target element and then the parameters to configure the desired animated jump.
 
 Here's our event handler:
 
@@ -389,7 +389,7 @@ function isInPageLink(n) {
 }
 ```
 
-stripHash is another helper funtion that we use also to set at script init time the value of the variable pageUrl:
+stripHash is another helper function that we use also to set at script init time the value of the variable pageUrl:
 
 ```javascript
 var pageUrl = location.hash
@@ -402,9 +402,9 @@ function stripHash(url) {
 }
 ```
 
-As I told before, this is only a possible way to perform this test. For example the [Sitepoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, using the url components.
+As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, using the url components.
 
-To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is reduntant. This is left as an exercise for the reader:)
+To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
 Here's the complete source of the master script, with all the previously discussed code snippets:
 
@@ -477,7 +477,7 @@ It can takes two values, auto for the default instant scrolling and smooth for t
 The Specification doesn't provide any way to configure the animation of the scroll, such as its duration and the timing function(easing).
 
 Unfortunately, at the time of this writing the support is very low, there are a lot of red cells in the [Can I Use table]((http://caniuse.com/#feat=css-scroll-behavior)), with a bit of green only in the Firefox column.
-In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the chrome://flags screen. The css property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
+In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the chrome://flags screen. The CSS property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
 
 Anyway, with a tiny change to our master script, we can detect if this feature is available in the user agent and stopping its execution if the test result is positive. So let's go back to the sources.
 
@@ -509,7 +509,7 @@ Hence, if the browser supports the native scrolling the script does nothing and 
 
 ## Conclusion
 
-A further advantage of the CSS solution just discussed,  beyond implementation semplicity and performance, is that the browser history behavior is consistent with the one expected when using the default instant scrolling. Every in-page jump is pushed on the browser history stack and we can go back-and-forth throught this entries with the relative buttons(but without smooth scrolling, at least on Firefox).
+A further advantage of the CSS solution just discussed,  beyond implementation simplicity and performance, is that the browser history behavior is consistent with the one expected when using the default instant scrolling. Every in-page jump is pushed on the browser history stack and we can go back-and-forth through this entries with the relative buttons(but without smooth scrolling, at least on Firefox).
 	
-Getting bak to the the master script, that now we could consider as a fallback when the CSS support lacks, we did not make any considerations on the  behaviour of the script with respect the browser history.
+Getting back to the the master script, that now we could consider as a fallback when the CSS support lacks, we did not make any considerations on the  behavior of the script with respect the browser history.
 Depending on the context and use case this is something that may or may not be of interest, but if we are taking the view that the script should enhance the default scrolling experience we should except a consistent behavior, as it happens with CSS. But now we are out time therefore this could the subject for a follow-up to this article.
