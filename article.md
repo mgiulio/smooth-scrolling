@@ -2,7 +2,7 @@
 
 Smooth scrolling is an user interface pattern that progresssively enhances the default in-page navigation user experience by smoothly scrolling the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
 
-This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of tools like !!!!!!Jump.js.
+This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of vanilla JavaScript solutions less cumbersome.
 
 Many implementations of this patterns are possible with the jQuery ecosystem, either using this library standalone or by using some plugins, but in this article we are interested to pure JavaScript solution. In particular we are going to explore the [Jump.js](http://callmecavs.com/jump.js/) library.
 
@@ -512,7 +512,4 @@ Hence, if the browser supports the native scrolling the script does nothing and 
 A further advantage of the CSS solution just discussed,  beyond implementation semplicity and performance, is that the browser history behavior is consistent with the one expected when using the default instant scrolling. Every in-page jump is pushed on the browser history stack and we can go back-and-forth throught this entries with the relative buttons(but without smooth scrolling, at least on Firefox).
 	
 Getting bak to the the master script, that now we could consider as a fallback when the CSS support lacks, we did not make any considerations on the  behaviour of the script with respect the browser history.
-Depending on the context and use case this is something that may or may not be of interest, but if we are taking the view that the script should enhance the default scrolling experience we should except a consistent behavior, as it happens with CSS.
-
-This will be the topic for a probable followup for this article.
-	
+Depending on the context and use case this is something that may or may not be of interest, but if we are taking the view that the script should enhance the default scrolling experience we should except a consistent behavior, as it happens with CSS. But now we are out time therefore this could the subject for a follow-up to this article.
