@@ -1,8 +1,10 @@
 initSmoothScrolling();
 
 function initSmoothScrolling() {
-	if (isCssSmoothSCrollSupported())
+	if (isCssSmoothSCrollSupported()) {
 		document.getElementById('css-support-msg').className = 'supported';
+		return;
+	}
 	
 	var duration = 400;
 	
