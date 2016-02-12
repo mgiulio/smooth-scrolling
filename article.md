@@ -402,7 +402,9 @@ function stripHash(url) {
 }
 ```
 
-As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, using the url components.
+This string-based solution with the trimming of the hash fragment works even with urls with query strings because the hash part comes after them in the genral structure of an url.
+ 
+As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the location object.
 
 To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
