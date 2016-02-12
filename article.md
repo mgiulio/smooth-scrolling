@@ -12,7 +12,7 @@ Support, when available, for native smooth scrolling with CSS will then added an
 
 ## Jump.js
 
-Jump.js is written in vanilla JavaScript(ES6), without any external dependencies.  It is a small utility, being only about 42 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code). but the size of the provided minified bundle is around 2.67 KB because it had to be transpiled. 
+Jump.js is written in vanilla JavaScript, ES6 flavor, without any external dependencies.  It is a small utility, being only about 42 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code). but the size of the provided minified bundle is around 2.67 KB because it had to be transpiled. 
 A [Demo](http://callmecavs.com/jump.js/) is available on the Github project page. 
 
 As suggested by the library name,  it provides only the jump, that is, the animated change of the scrollbar position from its current position to the destination, specified  providing either a element, its DOM node or the relative CSS selector, or a distance, a positive or negative number value. 
@@ -223,7 +223,7 @@ function jump(target, options) {
 
 The singleton now becomes the jump function that will be called to animate the scroll and the looping and the end callbacks becomes nested functions while the object properties now migrate to local variables(closures). Note that we don't need the IIFE anymore because now all the code is safely wrapped in the master function.
 
-After a last refactoring step to avoid repeating the timeStart reset check at each invocation of the loop loop callback, along with some other minor changes, we get the final version of our customized script:
+After a last refactoring step to avoid repeating the `timeStart` reset check at each invocation of the loop loop callback, along with some other minor changes, we get the final version of our customized script:
 
 ```javascript
 function jump(target, options) {
@@ -275,7 +275,7 @@ function jump(target, options) {
 }
 ```
 
-The first time requestAnimationFrame is called we pass it an anonymous functions that reset the timerStart variable before calling the loop function.
+The first time `requestAnimationFrame` is called we pass it an anonymous functions that reset the `timerStart` variable before calling the loop function.
 
 Once again, note that in the course of these refactorings the core scrolling animation code didn't change.
 	
@@ -330,8 +330,8 @@ In the first approach, with event delegation, we add our click listener to only 
 document.body.addEventListener('click', onClick, false);
 ```
 
-Of course, now in the registered event listener(onClick) the first thing that we have to do is to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
-This can be don in several ways so we abstract it in an helper function,  isInPageLink(). We'll have a look at the mechanics of this function in a moment.
+Of course, now in the registered event listener(`onClick`) the first thing that we have to do is to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
+This can be don in several ways so we abstract it in an helper function,  `isInPageLink()`. We'll have a look at the mechanics of this function in a moment.
 
 If the incoming click is on an in-page link we stop the event bubbling and prevent the associated default action, the instantaneous scrollbar change to the target destination.
 
@@ -361,7 +361,7 @@ With the second approach to monitoring the link clicks, the event handler, a sli
 	.forEach(function(a) { a.addEventListener('click', onClick, false); });
 ```
 
-We query for all A elements, and convert the returned DOM NodeList in a JavaScript array with the [].slice() hack. Then we can use the array methods to filter the in-page links,  re-using the same helper function defined above, and to finally attach the listener to the remaining link elements.
+We query for all `A` elements, and convert the returned DOM `NodeLis`t in a JavaScript array with the [].slice() hack. Then we can use the array methods to filter the in-page links,  re-using the same helper function defined above, and to finally attach the listener to the remaining link elements.
 
 The event handler is almost the same as before but of course we don't need to check the click target:
 
@@ -378,7 +378,7 @@ function onClick(e) {
 
 Which approach is best depends on the use context. For example, if new links elements may be dynamically added after the initial page load, we must use event delegation.
 
-Now we turn to the implementation of the isInPageLink, the helper function we used in the previous event handlers to abstract the test for the in-page links.  As we have seen this function takes a DOM node as an argument and returns a boolean value to indicate if the node represents an in-page link element. It is not sufficient to check that the passed node is an A tag and that it has an hash fragment set because the link could be to another page and in this case the default browser action must not disabled. So we check if the value stored in the attribute href minus the hash fragment is equal to the page url:
+Now we turn to the implementation of  `isInPageLink`, the helper function we used in the previous event handlers to abstract the test for the in-page links.  As we have seen this function takes a DOM node as an argument and returns a boolean value to indicate if the node represents an in-page link element. It is not sufficient to check that the passed node is an A tag and that it has an hash fragment set because the link could be to another page and in this case the default browser action must not disabled. So we check if the value stored in the attribute href minus the hash fragment is equal to the page url:
 
 ```javascript
 function isInPageLink(n) {
@@ -389,7 +389,7 @@ function isInPageLink(n) {
 }
 ```
 
-stripHash is another helper function that we use also to set at script init time the value of the variable pageUrl:
+`stripHash` is another helper function that we use also to set at script init time the value of the variable `pageUrl`:
 
 ```javascript
 var pageUrl = location.hash
@@ -404,7 +404,7 @@ function stripHash(url) {
 
 This string-based solution with the trimming of the hash fragment works even with urls with query strings because the hash part comes after them in the genral structure of an url.
  
-As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the location object.
+As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the `location` object.
 
 To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
@@ -473,13 +473,13 @@ function initSmoothScrolling() {
 
 ## Supporting Native Smooth Scrolling  with CSS
 
-The [CSS Object Model View module specification](https://drafts.csswg.org/cssom-view/#smooth-scrolling) introduced a new property to natively implement smooth scrolling: 'scroll-behavior'. 
+The [CSS Object Model View module specification](https://drafts.csswg.org/cssom-view/#smooth-scrolling) introduced a new property to natively implement smooth scrolling: `scroll-behavior`. 
 Note the spelling, 'behavior' as used in America English and not 'behaviour'.
 It can takes two values, auto for the default instant scrolling and smooth for the animated scrolling.
-The Specification doesn't provide any way to configure the animation of the scroll, such as its duration and the timing function(easing).
+The specification doesn't provide any way to configure the animation of the scroll, such as its duration and the timing function(easing).
 
 Unfortunately, at the time of this writing the support is very low, there are a lot of red cells in the [Can I Use table]((http://caniuse.com/#feat=css-scroll-behavior)), with a bit of green only in the Firefox column.
-In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the chrome://flags screen. The CSS property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
+In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the `chrome://flags` screen. The CSS property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
 
 Anyway, with a tiny change to our master script, we can detect if this feature is available in the user agent and stopping its execution if the test result is positive. So let's go back to the sources.
 
