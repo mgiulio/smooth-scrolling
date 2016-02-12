@@ -35,7 +35,7 @@ Before diving into a demo to show the usage of Jump.js  we are going to  perform
 In fact the code is in ES6 and it needs to be used with a Js build pipeline setup for transpiling and bundling modules. This could be overkill for some projects.
 So we are going to apply some refactoring to convert the code to ES5, ready to be used everywhere.
 
-First things first, let's remove ES6 syntax and features. The original code defines an ES6 class:
+First things first, let's remove ES6 syntax and features. The original code defines an [ES6 class](http://www.sitepoint.com/object-oriented-javascript-deep-dive-es6-classes/):
 
 ```javascript
 import easeInOutQuad from './easing'
@@ -154,11 +154,11 @@ var jump = (function() {
 ```
 
 Apart from the class wiping, we needed to make a couple of other changes.
-The callback for requestAnimationFrame, used to update the scrollbar position at each frame, that in the original code is invoked through an ES6 arrow function, is pre-bound to the jump singleton at init time.
+The callback for requestAnimationFrame, used to update the scrollbar position at each frame, that in the original code is invoked through an ES6 [arrow function](http://www.sitepoint.com/es6-arrow-functions-new-fat-concise-syntax-javascript), is pre-bound to the jump singleton at init time.
 Then we just bundled the default easing function in the same source file.
-Finally, we have wrapped the code in an IIFE(*Immediately-invoked Function Expressions*) to avoid namespace pollution.
+Finally, we have wrapped the code in an IIFE([Immediately-invoked Function Expressions](http://www.sitepoint.com/demystifying-javascript-closures-callbacks-iifes/)) to avoid namespace pollution.
 
-Now we apply another refactor step, noting that with the help of nested functions and closures(refer to SP article?) we can just use a function instead of an object.
+Now we apply another refactor step, noting that with the help of [nested functions and closures](http://www.sitepoint.com/demystifying-javascript-closures-callbacks-iifes/) we can just use a function instead of an object.
 
 ```javascript
 function jump(target, options) {
