@@ -4,18 +4,18 @@ Smooth scrolling is an user interface pattern that progressively enhances the de
 
 This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of vanilla JavaScript solutions less cumbersome.
 
-Many implementations of this patterns are possible with the jQuery ecosystem, either using this library standalone or by using some plugins, but in this article we are interested to pure JavaScript solution. In particular we are going to explore the [Jump.js](http://callmecavs.com/jump.js/) library.
+Many implementations of this patterns are possible within the jQuery ecosystem, either using this library standalone or by using some plugins, but in this article we are interested to pure a JavaScript solution. In particular we are going to explore and leverage the [Jump.js](http://callmecavs.com/jump.js/) library.
 
 After a presentation of the utility, with an overview of its features and characteristics, we will apply some changes to the original code to adapt it to our needs. In doing this we will refresh some JavaScript core language skills as functions and closures.
-After this, we will write an HTML page to test the smooth scrolling behavior that we will implement with an additional script.
-Support, when available, for native smooth scrolling with CSS will then added and finally we conclude with some observations on the browser history.
+After this, we will write an HTML page to test the smooth scrolling behavior that it will be then implemented with a custom script.
+Support, when available, for native smooth scrolling with CSS will then added and finally we conclude with some observations concerning the browser history.
 
 ## Jump.js
 
-Jump.js is written in vanilla JavaScript, ES6 flavor, without any external dependencies.  It is a small utility, being only about 42 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code). but the size of the provided minified bundle is around 2.67 KB because it had to be transpiled. 
+Jump.js is written in vanilla JavaScript, ES6 flavor, without any external dependencies.  It is a small utility, being only about 42 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code). but the size of the provided minified bundle is around 2.67 KB because it has to be transpiled. 
 A [Demo](http://callmecavs.com/jump.js/) is available on the Github project page. 
 
-As suggested by the library name,  it provides only the jump, that is, the animated change of the scrollbar position from its current position to the destination, specified  providing either a element, its DOM node or the relative CSS selector, or a distance, a positive or negative number value. 
+As suggested by the library name,  it provides only the jump, that is, the animated change of the scrollbar position from its current value to the destination, specified  providing either a element, as a DOM node or as  a CSS selector, or a distance, a positive or negative number value. 
 This means that in the implementation of the smooth scrolling pattern, we must perform the link  hijacking ourself. More on this in the following sections.
 
 To be noted that at the moment only the scrolling of the [viewport is supported](https://github.com/callmecavs/jump.js/issues/23	) and only in the vertical direction. 
@@ -23,19 +23,19 @@ To be noted that at the moment only the scrolling of the [viewport is supported]
 We can configure a jump with some options such as the duration(this parameter is mandatory), the easing function and a callback fired at the end of the animation. We will see them in action later in the demo. 
 See the [documentation](https://github.com/callmecavs/jump.js) for full details.
 		
-Talking about browser support, Jump.js runs without problems on 'modern' browsers. See the [documentation](https://github.com/callmecavs/jump.js#browser-support) for full supported browser list. Here we report that regarding Internet Explorer, it is  required the version 10 or higher. With opportune polyfills for [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) it should run even on older browsers. 
+Talking about browser support, Jump.js runs without problems on 'modern' browsers. Again, refer to the [documentation](https://github.com/callmecavs/jump.js#browser-support) for the full list of supported browsers. Here we just report that with regards to Internet Explorer, it is  required the version 10 or higher. With opportune polyfills for [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) it should run even on older browsers. 
 
 ## A Quick Peek Behind the Screen
 
-Internally the Jump.js source uses the [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) method of the window object to schedule the update of the position of the viewport vertical position at each frame of the scrolling animation. This update is performed passing the next position value computed with the easing function to the window.scrollTo method. See the [source](https://github.com/callmecavs/jump.js/blob/master/src/jump.js) for full details.
+Internally the Jump.js source uses the [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) method of the window object to schedule the update of the position of the viewport vertical position at each frame of the scrolling animation. This update is achived passing the next position value computed with the easing function to the `window.scrollTo` method. See the [source](https://github.com/callmecavs/jump.js/blob/master/src/jump.js) for full details.
 
 ## A Bit of Customization
 		
-Before diving into a demo to show the usage of Jump.js  we are going to  perform some slight changes to the original code, that however will left unmodified its core code.
-In fact the code is in ES6 and it needs to be used with a Js build pipeline setup for transpiling and bundling modules. This could be overkill for some projects.
+Before diving into a demo to show the usage of Jump.js  we are going to  perform some slight changes to the original code, that however will left unmodified its inner workings.
+In fact the source is in ES6 and it needs to be used with a Js build pipeline setup for transpiling and bundling modules. This could be overkill for some projects.
 So we are going to apply some refactoring to convert the code to ES5, ready to be used everywhere.
 
-First things first, let's remove ES6 syntax and features. The original code defines an [ES6 class](http://www.sitepoint.com/object-oriented-javascript-deep-dive-es6-classes/):
+First things first, let's remove the ES6 syntax and features. The script defines an [ES6 class](http://www.sitepoint.com/object-oriented-javascript-deep-dive-es6-classes/):
 
 ```javascript
 import easeInOutQuad from './easing'
@@ -154,11 +154,11 @@ var jump = (function() {
 ```
 
 Apart from the class wiping, we needed to make a couple of other changes.
-The callback for requestAnimationFrame, used to update the scrollbar position at each frame, that in the original code is invoked through an ES6 [arrow function](http://www.sitepoint.com/es6-arrow-functions-new-fat-concise-syntax-javascript), is pre-bound to the jump singleton at init time.
+The callback for `requestAnimationFrame`, used to update the scrollbar position at each frame, that in the original code is invoked through an ES6 [arrow function](http://www.sitepoint.com/es6-arrow-functions-new-fat-concise-syntax-javascript), is pre-bound to the jump singleton at init time.
 Then we just bundled the default easing function in the same source file.
 Finally, we have wrapped the code in an IIFE([Immediately-invoked Function Expressions](http://www.sitepoint.com/demystifying-javascript-closures-callbacks-iifes/)) to avoid namespace pollution.
 
-Now we apply another refactor step, noting that with the help of [nested functions and closures](http://www.sitepoint.com/demystifying-javascript-closures-callbacks-iifes/) we can just use a function instead of an object.
+Now we can apply another refactoring step, noting that with the help of [nested functions and closures](http://www.sitepoint.com/demystifying-javascript-closures-callbacks-iifes/) we can just use a function instead of an object.
 
 ```javascript
 function jump(target, options) {
@@ -221,9 +221,9 @@ function jump(target, options) {
 
 ```
 
-The singleton now becomes the jump function that will be called to animate the scroll and the looping and the end callbacks becomes nested functions while the object properties now migrate to local variables(closures). Note that we don't need the IIFE anymore because now all the code is safely wrapped in the master function.
+The singleton now becomes the jump function that will be called to animate the scroll, and the looping and the end callbacks becomes nested functions, while the object properties now migrate to local variables(closures). We don't need the IIFE anymore because now all the code is safely wrapped in the master function.
 
-After a last refactoring step to avoid repeating the `timeStart` reset check at each invocation of the loop loop callback, along with some other minor changes, we get the final version of our customized script:
+After a last refactoring step to avoid repeating the `timeStart` reset check at each invocation of the loop callback, along with some other minor changes, we get the final version of our customized script:
 
 ```javascript
 function jump(target, options) {
@@ -318,7 +318,7 @@ In the head we include a few CSS rule to setup a basic, minimal layout, while at
 
 This is the script that will enhance the scrolling experience of the test page with the animated jumps provided by our customized version of Jump.js. Of course also this code will be written in plain JavaScript.
 
-Let's briefly outline the tasks the it should perform.
+Let's briefly outline the tasks the it should accomplish.
 It must *hijack* the clicks on the in-page links, disabling the browser default behaviour, that is, the abrupt jump to the target element indicated in the hash fragment of the href attribute of the clicked link,  and replace it with a call to our jump() function.
 
 So, first thing is to monitor the clicks on the in-page links.
@@ -404,7 +404,7 @@ function stripHash(url) {
 
 This string-based solution with the trimming of the hash fragment works even with urls with query strings because the hash part comes after them in the genral structure of an url.
  
-As I told before, this is only a possible way to perform this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the `location` object.
+As I told before, this is only a possible way to implement this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the `location` object.
 
 To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
