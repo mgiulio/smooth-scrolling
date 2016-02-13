@@ -1,6 +1,6 @@
 # Smooth Scrolling in Plain JavaScript and CSS
 
-Smooth scrolling is an user interface pattern that progressively enhances the default in-page navigation user experience by smoothly scrolling the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
+Smooth scrolling is an user interface pattern that progressively enhances the default in-page navigation user experience by animating the change of the scrollbar positionof the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
 
 This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of vanilla JavaScript solutions less cumbersome.
 
@@ -324,20 +324,20 @@ It must *hijack* the clicks on the in-page links, disabling the browser default 
 So, first thing is to monitor the clicks on the in-page links.
 We can do this in two ways, with event delegation or attaching the handler to each relevant link.
 
-In the first approach, with event delegation, we add our click listener to only one element, namely the document.body. In this way, every click event on whatever element of the page will bubble up DOM tree along the branch of its ancestors until it will reach the document body element:
+In the first approach, with event delegation, we add our click listener to only one element, namely the document.body. In this way, every click event on whatever element of the page will bubble up the DOM tree along the branch of its ancestors until it will reach the document body element:
 
 ```javascript
 document.body.addEventListener('click', onClick, false);
 ```
 
-Of course, now in the registered event listener(`onClick`) the first thing that we have to do is to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
+Of course, now in the registered event listener(`onClick`) we have to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
 This can be don in several ways so we abstract it in an helper function,  `isInPageLink()`. We'll have a look at the mechanics of this function in a moment.
 
 If the incoming click is on an in-page link we stop the event bubbling and prevent the associated default action, the instantaneous scrollbar change to the target destination.
 
-Finally we call our jump function, providing it first the hash selector for the target element and then the parameters to configure the desired animated jump.
+Finally we call the jump function, providing it first the hash selector for the target element and then the parameters to configure the desired animation.
 
-Here's our event handler:
+Here's the event handler:
 
 ```javascript
 function onClick(e) {
@@ -378,7 +378,7 @@ function onClick(e) {
 
 Which approach is best depends on the use context. For example, if new links elements may be dynamically added after the initial page load, we must use event delegation.
 
-Now we turn to the implementation of  `isInPageLink`, the helper function we used in the previous event handlers to abstract the test for the in-page links.  As we have seen this function takes a DOM node as an argument and returns a boolean value to indicate if the node represents an in-page link element. It is not sufficient to check that the passed node is an A tag and that it has an hash fragment set because the link could be to another page and in this case the default browser action must not disabled. So we check if the value stored in the attribute href minus the hash fragment is equal to the page url:
+Now we turn to the implementation of  `isInPageLink`, the helper function we used in the previous event handlers to abstract the test for the in-page links.  As we have seen this function takes a DOM node as an argument and returns a boolean value to indicate if the node represents an in-page link element. It is not sufficient to check that the passed node is an A tag and that it has an hash fragment set because the link could be to another page and in this case the default browser action must not disabled. So we check if the value stored in the attribute href 'minus' the hash fragment is equal to the page url:
 
 ```javascript
 function isInPageLink(n) {
@@ -389,7 +389,7 @@ function isInPageLink(n) {
 }
 ```
 
-`stripHash` is another helper function that we use also to set at script init time the value of the variable `pageUrl`:
+`stripHash` is another helper function that we also use  to set at script init time the value of the variable `pageUrl`:
 
 ```javascript
 var pageUrl = location.hash
@@ -402,11 +402,11 @@ function stripHash(url) {
 }
 ```
 
-This string-based solution with the trimming of the hash fragment works even with urls with query strings because the hash part comes after them in the genral structure of an url.
+This string-based solution with the trimming of the hash fragment works even with urls with query strings because the hash part comes after them in the general structure of an url.
  
 As I told before, this is only a possible way to implement this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the `location` object.
 
-To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
+To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we already know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
 Here's the complete source of the master script, with all the previously discussed code snippets:
 
@@ -478,8 +478,7 @@ Note the spelling, 'behavior' as used in America English and not 'behaviour'.
 It can takes two values, auto for the default instant scrolling and smooth for the animated scrolling.
 The specification doesn't provide any way to configure the animation of the scroll, such as its duration and the timing function(easing).
 
-Unfortunately, at the time of this writing the support is very low, there are a lot of red cells in the [Can I Use table]((http://caniuse.com/#feat=css-scroll-behavior)), with a bit of green only in the Firefox column.
-In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the `chrome://flags` screen. The CSS property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
+Unfortunately, at the time of this writing the support is very low, there are a lot of red cells in the [Can I Use table]((http://caniuse.com/#feat=css-scroll-behavior)), with a bit of green only in the Firefox column. In Chrome this features is [under development]((https://www.chromestatus.com/features/5812155903377408)) and a partial implementation is available enabling it in the `chrome://flags` screen. The CSS property is is not implemented yet so the smooth scrolling on link clicks doesn't work.
 
 Anyway, with a tiny change to our master script, we can detect if this feature is available in the user agent and stopping its execution if the test result is positive. So let's go back to the sources.
 
