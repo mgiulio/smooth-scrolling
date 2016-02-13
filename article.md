@@ -331,7 +331,7 @@ document.body.addEventListener('click', onClick, false);
 ```
 
 Of course, now in the registered event listener(`onClick`) we have to inspect the target of the incoming click event object  to check that it is relative to an in page link element.
-This can be don in several ways so we abstract it in an helper function,  `isInPageLink()`. We'll have a look at the mechanics of this function in a moment.
+This can be done in several ways so we abstract it in an helper function,  `isInPageLink()`. We'll have a look at the mechanics of this function in a moment.
 
 If the incoming click is on an in-page link we stop the event bubbling and prevent the associated default action, the instantaneous scrollbar change to the target destination.
 
@@ -361,7 +361,7 @@ With the second approach to monitoring the link clicks, the event handler, a sli
 	.forEach(function(a) { a.addEventListener('click', onClick, false); });
 ```
 
-We query for all `A` elements, and convert the returned DOM `NodeLis`t in a JavaScript array with the [].slice() hack. Then we can use the array methods to filter the in-page links,  re-using the same helper function defined above, and to finally attach the listener to the remaining link elements.
+We query for all `<a>` elements, and convert the returned DOM `NodeList` in a JavaScript array with the [].slice() hack. Then we can use the array methods to filter the in-page links,  re-using the same helper function defined above, and to finally attach the listener to the remaining link elements.
 
 The event handler is almost the same as before but of course we don't need to check the click target:
 
@@ -406,7 +406,7 @@ This string-based solution with the trimming of the hash fragment works even wit
  
 As I told before, this is only a possible way to implement this test. For example the [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) cited at the beginning of this tutorial uses a different solution, making a component-wise comparison of the link href with the `location` object.
 
-To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we already know are A tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
+To be noted that we have used this function in both approaches to event subscription, but in the second one, we are using it as a filter for elements that we already know are `<a>` tags so the first check on the tagName attribute is redundant. This is left as an exercise for the reader:)
 
 Here's the complete source of the master script, with all the previously discussed code snippets:
 
