@@ -1,5 +1,3 @@
-# Smooth Scrolling in Plain JavaScript and CSS
-
 Smooth scrolling is an user interface pattern that progressively enhances the default in-page navigation user experience by animating the change of the scrollbar positionof the scroll box(the viewport or a scrollable element) from the location of the activated link to the location of the destination element indicated in hash fragment of the link url.
 
 This is nothing new, being a pattern  known from many years now,  check for instance this [SitePoint article](http://www.sitepoint.com/scroll-smoothly-javascript/) that dates back to 2003!  As an aside, this article has an historical value as it shows how client side JavaScript programming, and the DOM in particular, has changed and evolved in these years, allowing the development of vanilla JavaScript solutions less cumbersome.
